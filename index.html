@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мир футбола</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            background: #f4f4f4;
+            color: #333;
+            line-height: 1.6;
+        }
+        header {
+            background: linear-gradient(90deg, #1e7f34, #2ecc71);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        body.dark {
+            background: #121212;
+            color: #e0e0e0;
+        }
+        body.dark header {
+            background: linear-gradient(90deg, #0f3d1e, #1e7f34);
+        }
+        body.dark nav {
+            background: #0f3d1e;
+        }
+        body.dark .card,
+        body.dark table,
+        body.dark .facts {
+            background: #1e1e1e;
+            color: #e0e0e0;
+        }
+        body.dark footer {
+            background: #0f3d1e;
+        }
+        .theme-btn {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            padding: 12px 18px;
+            border: none;
+            border-radius: 30px;
+            background: #1e7f34;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        .theme-btn:hover {
+            opacity: 0.9;
+        }
+        nav {
+            background: #145a25;
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            padding: 12px;
+            flex-wrap: wrap;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 25px auto;
+            padding: 0 15px;
+        }
+        .hero {
+            background: url('https://images.unsplash.com/photo-1508098682722-e99c43a406b2') center/cover no-repeat;
+            height: 350px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-shadow: 1px 1px 6px black;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .hero h2 {
+            font-size: 40px;
+        }
+        .hero p {
+            font-size: 18px;
+            margin-top: 10px;
+        }
+        section {
+            margin-bottom: 40px;
+        }
+        section h2 {
+            margin-bottom: 15px;
+            color: #1e7f34;
+        }
+        .sections {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+        }
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+        }
+        .card h3 {
+            margin-bottom: 10px;
+            color: #1e7f34;
+        }
+        .club {
+            text-align: center;
+        }
+        .club img {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            margin-bottom: 10px;
+        }
+        .club a {
+            color: #1e7f34;
+            text-decoration: none;
+        }
+        .club a:hover {
+            text-decoration: underline;
+            margin-bottom: 10px;
+            color: #1e7f34;
+        }
+        .card ul {
+            padding-left: 18px;
+        }
+        .card ul li {
+            margin-bottom: 6px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        table th, table td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+        table th {
+            background: #1e7f34;
+            color: white;
+        }
+        .facts {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+        }
+        footer {
+            background: #1e7f34;
+            color: white;
+            text-align: center;
+            padding: 18px;
+            margin-top: 40px;
+        }
+        /* === MODAL (добавлено) === */
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+.modal-content {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    max-width: 400px;
+    text-align: center;
+}
+body.dark .modal-content {
+    background: #1e1e1e;
+    color: #e0e0e0;
+}
+
+    </style>
+</head>
+<body>
+<!-- === MODAL (добавлено) === -->
+<div class="modal" id="modal">
+    <div class="modal-content">
+        <h3 id="modalTitle"></h3>
+        <p>Подробности новости появятся позже ⚽</p>
+        <button id="closeModal">Закрыть</button>
+    </div>
+</div>
+
+<header>
+    <h1>⚽ Мир футбола</h1>
+    <p>Новости, турниры, клубы и легенды мирового футбола</p>
+</header>
+
+<nav>
+    <a href="#news">Новости</a>
+    <a href="#tournaments">Турниры</a>
+    <a href="#teams">Клубы</a>
+    <a href="#players">Игроки</a>
+    <a href="#facts">Факты</a>
+</nav>
+
+<div class="container">
+
+    <div class="hero">
+        <div>
+            <h2>Футбол — игра миллионов</h2>
+            <p>Самый популярный вид спорта в мире</p>
+        </div>
+    </div>
+
+    <section id="news">
+        <h2>📰 Последние новости</h2>
+        <div class="sections">
+            <div class="card">
+                <h3>Трансферы</h3>
+                <p>Крупные клубы продолжают усиливаться перед новым сезоном. Ожидаются громкие переходы.</p>
+            </div>
+            <div class="card">
+                <h3>Результаты матчей</h3>
+                <p>В топ-лигах Европы прошли напряжённые матчи с неожиданными результатами.</p>
+            </div>
+            <div class="card">
+                <h3>Травмы и возвращения</h3>
+                <p>Несколько звёздных игроков вернулись в строй после травм.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="tournaments">
+        <h2>🏆 Популярные турниры</h2>
+        <table>
+            <tr>
+                <th>Турнир</th>
+                <th>Регион</th>
+                <th>Период</th>
+            </tr>
+            <tr>
+                <td>Лига чемпионов</td>
+                <td>Европа</td>
+                <td>Сентябрь – Май</td>
+            </tr>
+            <tr>
+                <td>Чемпионат мира</td>
+                <td>Мир</td>
+                <td>Раз в 4 года</td>
+            </tr>
+            <tr>
+                <td>Евро</td>
+                <td>Европа</td>
+                <td>Раз в 4 года</td>
+            </tr>
+        </table>
+    </section>
+
+    <section id="teams">
+        <h2>🏟️ Известные клубы</h2>
+        <div class="sections clubs">
+            <div class="card club">
+                <img src="https://upload.wikimedia.org/wikipedia/en/5/56/Real_Madrid_CF.svg" alt="Реал Мадрид">
+                <h3><a href="https://www.realmadrid.com" target="_blank">Реал Мадрид</a></h3>
+                <p>Самый титулованный клуб в истории Лиги чемпионов.</p>
+            </div>
+            <div class="card club">
+                <img src="https://upload.wikimedia.org/wikipedia/en/4/47/FC_Barcelona_%28crest%29.svg" alt="Барселона">
+                <h3><a href="https://www.fcbarcelona.com" target="_blank">Барселона</a></h3>
+                <p>Известна своей философией игры и академией Ла Масия.</p>
+            </div>
+            <div class="card club">
+                <img src="https://upload.wikimedia.org/wikipedia/en/e/eb/Manchester_City_FC_badge.svg" alt="Манчестер Сити">
+                <h3><a href="https://www.mancity.com" target="_blank">Манчестер Сити</a></h3>
+                <p>Доминирующий клуб английской Премьер-лиги последних лет.</p>
+            </div>
+            <div class="card club">
+                <img src="https://upload.wikimedia.org/wikipedia/en/1/1f/FC_Bayern_M%C3%BCnchen_logo_%282017%29.svg" alt="Бавария">
+                <h3><a href="https://fcbayern.com" target="_blank">Бавария</a></h3>
+                <p>Флагман немецкого футбола и постоянный участник ЛЧ.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="players">
+        <h2>⭐ Легендарные игроки (рейтинг)</h2>
+        <div class="sections" id="playersList"></div>
+    </section>
+
+    <section id="facts">
+        <h2>📌 Интересные факты</h2>
+        <div class="facts">
+            <ul>
+                <li>В футбол играют более 250 миллионов человек по всему миру.</li>
+                <li>Самый быстрый гол был забит менее чем за 2 секунды.</li>
+                <li>Чемпионат мира — самое просматриваемое спортивное событие.</li>
+                <li>Футбол официально признан в более чем 200 странах.</li>
+            </ul>
+        </div>
+    </section>
+
+</div>
+
+<footer>
+    <p>© 2025 Мир футбола | Учебный и портфолио проект</p>
+</footer>
+
+<button class="theme-btn">🌙 Тёмная тема</button>
+
+<script>
+    // Плавная прокрутка по меню
+    document.querySelectorAll('nav a').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            document.querySelector(targetId).scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    });
+
+    // Динамическая дата в футере
+    const footer = document.querySelector('footer p');
+    const year = new Date().getFullYear();
+    footer.innerHTML = `© ${year} Мир футбола | Учебный и портфолио проект`;
+
+    // Простейшие интерактивные новости
+    const newsCards = document.querySelectorAll('#news .card');
+    newsCards.forEach(card => {
+        card.addEventListener('click', () => {
+            const modal = document.getElementById('modal');
+const modalTitle = document.getElementById('modalTitle');
+const closeModal = document.getElementById('closeModal');
+
+newsCards.forEach(card => {
+    card.addEventListener('click', () => {
+        modalTitle.textContent = card.querySelector('h3').textContent;
+        modal.style.display = 'flex';
+    });
+});
+
+closeModal.addEventListener('click', () => {
+    modal.style.display = 'none';
+});
+        });
+    });
+    // Переключение светлой и тёмной темы
+    const themeBtn = document.querySelector('.theme-btn');
+    themeBtn.addEventListener('click', () => {
+        document.body.classList.toggle('dark');
+        if (document.body.classList.contains('dark')) {
+            themeBtn.textContent = '☀️ Светлая тема';
+        } else {
+            themeBtn.textContent = '🌙 Тёмная тема';
+        }
+    });
+
+    // Счётчик кликов по сайту
+    let clicks = 0;
+    document.body.addEventListener('click', () => {
+        clicks++;
+        console.log('Кликов по странице:', clicks);
+    });
+    // ===== РЕЙТИНГ ИГРОКОВ =====
+    const players = [
+        { name: 'Лионель Месси', info: 'Чемпион мира, 8 Золотых мячей', rating: 0 },
+        { name: 'Криштиану Роналду', info: 'Легенда ЛЧ, топ-бомбардир', rating: 0 },
+        { name: 'Пеле', info: '3-кратный чемпион мира', rating: 0 },
+        { name: 'Мбаппе', info: 'Звезда современного футбола', rating: 0 }
+    ];
+
+    const playersList = document.getElementById('playersList');
+
+    function renderPlayers() {
+        playersList.innerHTML = '';
+        players.forEach((player, index) => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `
+                <h3>${player.name}</h3>
+                <p>${player.info}</p>
+                <p><strong>Рейтинг:</strong> ⭐ ${player.rating}</p>
+                <button onclick="vote(${index})">👍 Голосовать</button>
+            `;
+            playersList.appendChild(card);
+        });
+    }
+
+    function vote(index) {
+        players[index].rating++;
+        renderPlayers();
+    }
+
+    renderPlayers();
+
+    // === MODAL (добавлено) ===
+
+
+</script>
+
+</body>
+</html>
+
